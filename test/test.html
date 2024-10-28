@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+    <head>
+        <template type="macro" tag-name="test-macro">
+            <h1 slot="title"><i>Default Title</i></h1>
+            <p>
+                <slot name="message"><i>default message</i></slot>
+            </p>
+        </template>
+        <script src="../simple-html-macro.js"></script>
+    </head>
+
+    <body>
+        <p>Test 1: display the default slot values in italics.</p>
+        <test-macro></test-macro>
+        <hr />
+
+        <p>Test 2: display plain-text (html escaped) title and message.</p>
+        <test-macro title="Text and <code> title" message="Text and <code> message"></test-macro>
+        <hr />
+
+        <p>Test 3: display HTML title and message</p>
+        <test-macro
+            title-html="<code>HTML title</code>"
+            message-html="This <code style='color:red'>message</code> has HTML"
+        ></test-macro>
+    </body>
+</html>
