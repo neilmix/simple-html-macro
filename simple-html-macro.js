@@ -32,7 +32,7 @@
         for (let attrs of frag.querySelectorAll("[slot]")) {
           interpolate(
             attrs.getAttribute("slot"),
-            (value) => (attrs.innerText = value),
+            (value) => (attrs.textContent = value),
             (value) => (attrs.innerHTML = value),
           );
         }

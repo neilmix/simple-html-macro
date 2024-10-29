@@ -24,5 +24,18 @@
             title-html="<code>HTML title</code>"
             message-html="This <code style='color:red'>message</code> has HTML"
         ></test-macro>
+        <hr />
+
+        <p>Test 4: text shouldn't have line breaks</p>
+        <test-macro
+            title="
+            Text and <code>
+            title (no line breaks)
+        "
+            message="
+            Text and <code>
+            message (no line breaks)
+        "
+        ></test-macro>
     </body>
 </html>
