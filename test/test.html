@@ -1,28 +1,26 @@
 <!doctype html>
 <html>
     <head>
-        <template type="macro" tag-name="test-macro">
-            <h1 slot="title"><i>Default Title</i></h1>
-            <p>
+        <template type="macro" tag-name="test-macro" color="green">
+            <h1>${title}</h1>
+            <p style="color:${color}">
                 <slot name="message"><i>default message</i></slot>
             </p>
         </template>
+        <template type="macro" tag-name="test-macro2"> ${foo} </template>
         <script src="../simple-html-macro.js"></script>
     </head>
 
     <body>
-        <p>Test 1: display the default slot values in italics.</p>
+        <p>Test 1: display the default values</p>
         <test-macro></test-macro>
         <hr />
 
-        <p>Test 2: display plain-text (html escaped) title and message.</p>
-        <test-macro title="Text and <code> title" message="Text and <code> message"></test-macro>
-        <hr />
-
-        <p>Test 3: display HTML title and message</p>
+        <p>Test 2: display plain-text (html escaped) title and message, message in red.</p>
         <test-macro
-            title-html="<code>HTML title</code>"
-            message-html="This <code style='color:red'>message</code> has HTML"
+            title="Text and <code> title"
+            message="Text and <code> message"
+            color="red"
         ></test-macro>
         <hr />
 
@@ -37,5 +35,16 @@
             message (no line breaks)
         "
         ></test-macro>
+        <hr />
+
+        <p>Test 5: slot support in the message</p>
+        <test-macro title="the title">
+            <div>this shouldn't display</div>
+            <p slot="message">This is a <b>message</b> in a slot</p>
+        </test-macro>
+        <hr />
+
+        <p>Test 6: test a second macro type</p>
+        <test-macro2 foo="bar"></test-macro2>
     </body>
 </html>

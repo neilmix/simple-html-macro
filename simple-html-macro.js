@@ -4,39 +4,58 @@
     const tag = macro.getAttribute("tag-name");
     const newcl = class extends HTMLElement {
       connectedCallback() {
-        let interpolate = (attr, setText, setHTML) => {
-          let value = this.getAttribute(attr);
-          if (value !== null) {
-            setText(value);
-            return true;
+        requestAnimationFrame(() => {
+          // clone our template, an HTMLDocumentFragment that eventually replaces `this` in the DOM
+          let frag = macro.content.cloneNode(true);
+
+          // find all slots in our instance content
+          let slots = {};
+          for (let el of this.querySelectorAll("[slot]")) {
+            slots[el.getAttribute("slot")] = el;
           }
-          value = this.getAttribute(attr + "-html");
-          if (value !== null) {
-            setHTML(value);
-            return true;
+
+          // replace all slots in the template with the corresponding slot in the instance content (if present)
+          for (let tag of frag.querySelectorAll("slot")) {
+            let attr = tag.getAttribute("name");
+            if (slots[attr]) {
+              tag.replaceWith(slots[attr]);
+            } else {
+              let value = this.getAttribute(attr);
+              if (value !== null) {
+                tag.insertAdjacentText("beforebegin", value);
+                tag.remove();
+              }
+            }
           }
-          return false;
-        };
-        let frag = macro.content.cloneNode(true);
-        for (let tag of frag.querySelectorAll("slot")) {
-          if (
-            interpolate(
-              tag.getAttribute("name"),
-              (value) => tag.insertAdjacentText("beforebegin", value),
-              (value) => tag.insertAdjacentHTML("beforebegin", value),
-            )
-          ) {
-            tag.parentNode.removeChild(tag);
+
+          let interpolate = (value) => {
+            return value.replace(/\${([^}]+)}/g, (_, key) => {
+              return this.getAttribute(key) || macro.getAttribute(key) || "";
+            });
+          };
+
+          // crawl our fragment DOM and interpolate any ${} macros
+          for (let el of frag.querySelectorAll("*")) {
+            for (let attr of el.getAttributeNames()) {
+              let value = el.getAttribute(attr);
+              if (value !== null) {
+                el.setAttribute(attr, interpolate(value));
+              }
+            }
           }
-        }
-        for (let attrs of frag.querySelectorAll("[slot]")) {
-          interpolate(
-            attrs.getAttribute("slot"),
-            (value) => (attrs.textContent = value),
-            (value) => (attrs.innerHTML = value),
-          );
-        }
-        this.parentNode.replaceChild(frag, this);
+
+          (function interpolateText(node) {
+            if (node.nodeType === Node.TEXT_NODE) {
+              node.nodeValue = interpolate(node.nodeValue);
+            } else {
+              for (let child of node.childNodes) {
+                interpolateText(child);
+              }
+            }
+          })(frag);
+
+          this.replaceWith(frag);
+        });
       }
     };
     customElements.define(tag, newcl);
