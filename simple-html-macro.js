@@ -29,8 +29,13 @@
           }
 
           let interpolate = (value) => {
-            return value.replace(/\${([^}]+)}/g, (_, key) => {
-              return this.getAttribute(key) || macro.getAttribute(key) || "";
+            return value.replace(/\${([^}]+)}/g, (_, attr) => {
+              return (
+                (slots[attr] && slots[attr].textContent) ||
+                this.getAttribute(attr) ||
+                macro.getAttribute(attr) ||
+                ""
+              );
             });
           };
 

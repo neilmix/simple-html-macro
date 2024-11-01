@@ -2,12 +2,24 @@
 
 The simplest way to reuse markup in your web page.
 
+
 ## Usage
+
+This library allows you to create custom HTML tags that get replaced by a pre-defined template.
+Here's how to use it.
 
 **Step 1: Create your macro template.**
 
+- Use a `template` tag with `type="macro"` as your template. 
+- The `tag-name` attribute will signify your custom element's name. 
+- Use `${my-attribute-name}` or `<slot name="my-slot-name"></slot>` as placeholders for argument substitution. 
+- Any other attributes on your template tag will serve defaults for argument substitution.
+
+In the example below, the tag name is "guest-nametag", its parameters are "fullname", "role", and "color",
+and the default color is "black".
+
 ```
-<template type="macro" tag-name"name-tag" color="black">
+<template type="macro" tag-name"guest-nametag" color="black">
     <div class="rounded" style="color:${color}">
         <h1>${fullname}</h1>
         <slot name="role">
@@ -23,40 +35,37 @@ The simplest way to reuse markup in your web page.
 
 **Step 3: Use your custom HTML tag.**
 
+Arguments can be specified using attributes, or by providing inner content using the `slot` attribute.
+
 ```
 <body>
     <p>Guests invited to the party:</p>
-    <name-tag fullname="Jane Appleseed" role="CEO"></name-tag>
-    <name-tag fullname="Johnny Appleseed" color="red">
+    
+    <!-- This nametag uses the default color of black. -->
+    <guest-nametag fullname="Jane Appleseed" role="CEO"></guest-nametag>
+    
+    <!-- This nametag specifies an unordered list as the "roll" argument. -->
+    <guest-nametag fullname="Johnny Appleseed" color="red">
       <ul slot="role">
         <li>Marketing</li>
         <li>Web Design</li>
       </ul>
-    </name-tag>
+    </guest-nametag>
+
 </body>
 ```
 
-That's it!
-
-## In-depth explanation
-
-* `template` tags with `type="macro"` declare your custom tag. The `tag-name` attribute is the name of your custom tag.
-* Any other attributes of your `template` tag will define default attribute values for your custom tags. (In the example
-  above, the `color` attribute is set to "black" by default.)
-* Use `${<attribute-name>}` to insert attribute values from the custom tag into your template. They can be inserted into
-  attribute values or text content.
-* Use `slot` tags to insert HTML content from the custom tag into your template. The `name` attribute of the `slot` tag must
-  match the `slot` attribute used within the custom tag.
-
-Putting it all together, the above will render as:
+That's it! The above will render as:
 
 ```
 <body>
     <p>Guests invited to the party:</p>
+    
     <div class="rounded" style="color:black">
         <h1>Jane Appleseed</h1>
         CEO
     </div>
+    
     <div class="rounded" style="color:red">
         <h1>Johnny Appleseed</h1>
         <ul>
@@ -64,6 +73,7 @@ Putting it all together, the above will render as:
             <li>Web Design</li>
         </ul>
     </div>
+    
 </body>
 ```
 
@@ -75,7 +85,7 @@ Putting it all together, the above will render as:
 
 - **Attribute values are HTML-escaped.**
 
-  To render HTML, use a `slot` tag in your template and a corresponding `slot` reference in your tag.
+  To render HTML, use a `slot`.
 
 - **Though tempting, you'll likely want to avoid using self-closing tags.**
 
@@ -85,7 +95,7 @@ Putting it all together, the above will render as:
 
 - **Macros are replaced in-line, with no obtrusive parent container tags.**
 
-  For example, supposed you have this template:  
+  For example, suppose you have this template:  
   `<template type="macro" tag-name="my-tag"><span>one</span> <span>two</span></template>`
 
   And this HTML:  
@@ -100,5 +110,5 @@ Putting it all together, the above will render as:
   which is at odds with the encapsulation that true web components provide.
 
   Mostly this isn't a problem. But, be aware that custom tag contents are scoped globally. For example,
-  unlike true web components, styles declared via style tag within a template will effect ***all*** HTML
+  unlike true web components, styles declared within a template will effect ***all*** HTML
   on the page, not just the custom tag's contents.

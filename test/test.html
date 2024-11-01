@@ -6,7 +6,6 @@
             <p style="color:${color}">
                 <slot name="message"><i>default message</i></slot>
             </p>
-            <p slot="color">foo</p>
         </template>
         <template type="macro" tag-name="test-macro2"> ${foo} </template>
         <template type="macro" tag-name="test-repeat">
@@ -51,14 +50,15 @@
         <p>Test 6: test a second macro type</p>
         <test-macro2 foo="bar"></test-macro2>
         <hr />
-        <p>Test 7: test repeated interpolations of the same value</p>
+        <p>
+            Test 7: test repeated interpolations of the same value, and test mix-and-match of
+            attr/slot, handlebars/slot
+        </p>
         4x bar:<br />
         <test-repeat foo="bar"></test-repeat><br />
         --- <br />
-        2x baz:<br />
-        <test-repeat>
-            <span slot="foo">baz</span> </test-repeat
-        ><br />
+        4x baz, bold 'a' in the second 2:<br />
+        <test-repeat> <span slot="foo">b<b>a</b>z</span> </test-repeat><br />
         <hr />
     </body>
 </html>
