@@ -18,7 +18,7 @@
           for (let tag of frag.querySelectorAll("slot")) {
             let attr = tag.getAttribute("name");
             if (slots[attr]) {
-              tag.replaceWith(slots[attr]);
+              tag.replaceWith(slots[attr].cloneNode(true));
             } else {
               let value = this.getAttribute(attr);
               if (value !== null) {
