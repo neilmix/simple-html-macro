@@ -10,9 +10,9 @@ Here's how to use it.
 
 **Step 1: Create your macro template.**
 
-- Use a `template` tag with `type="macro"` as your template. 
-- The `tag-name` attribute will signify your custom element's name. 
-- Use `${my-attribute-name}` or `<slot name="my-slot-name"></slot>` as placeholders for argument substitution. 
+- Use a `template` tag with `type="macro"` as your template.
+- The `tag-name` attribute will signify your custom element's name.
+- Use `${my-attribute-name}` or `<slot name="my-slot-name"></slot>` as placeholders for argument substitution.
 - Any other attributes on your template tag will serve defaults for argument substitution.
 
 In the example below, the tag name is "guest-nametag", its parameters are "fullname", "role", and "color",
@@ -40,10 +40,10 @@ Arguments can be specified using attributes, or by providing inner content using
 ```
 <body>
     <p>Guests invited to the party:</p>
-    
+
     <!-- This nametag uses the default color of black. -->
     <guest-nametag fullname="Jane Appleseed" role="CEO"></guest-nametag>
-    
+
     <!-- This nametag specifies an unordered list as the "roll" argument. -->
     <guest-nametag fullname="Johnny Appleseed" color="red">
       <ul slot="role">
@@ -60,12 +60,12 @@ That's it! The above will render as:
 ```
 <body>
     <p>Guests invited to the party:</p>
-    
+
     <div class="rounded" style="color:black">
         <h1>Jane Appleseed</h1>
         CEO
     </div>
-    
+
     <div class="rounded" style="color:red">
         <h1>Johnny Appleseed</h1>
         <ul>
@@ -73,7 +73,7 @@ That's it! The above will render as:
             <li>Web Design</li>
         </ul>
     </div>
-    
+
 </body>
 ```
 
@@ -91,17 +91,21 @@ That's it! The above will render as:
 
   For example, using `<my-tag />` syntax is best avoided. The reasons for this are complicated and historical. [Read more here.](https://jakearchibald.com/2023/against-self-closing-tags-in-html/)
 
+- **Dynamic modifications to tag definitions are not supported.**
+
+  Once a tag is defined, it cannot be redefined. This is a limitation of the web component API.
+
 ## Arcane Details
 
 - **Macros are replaced in-line, with no obtrusive parent container tags.**
 
-  For example, suppose you have this template:  
+  For example, suppose you have this template:
   `<template type="macro" tag-name="my-tag"><span>one</span> <span>two</span></template>`
 
-  And this HTML:  
+  And this HTML:
   `<span>before</span> <my-tag></my-tag> <span>after</span>`
 
-  Your content will render as:  
+  Your content will render as:
   `<span>before</span> <span>one</span> <span>two</span> <span>after</span>`
 
 - **Custom tags and templates via this library are not true web components.**

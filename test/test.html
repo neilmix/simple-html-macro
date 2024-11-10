@@ -12,6 +12,16 @@
             ${foo} ${foo} <slot name="foo"></slot> <slot name="foo"></slot>
         </template>
         <script src="../simple-html-macro.js"></script>
+
+        <script>
+            setTimeout(() => {
+                document.getElementById("async").innerHTML = `
+                    <template type="macro" tag-name="async-test">
+                      Async content loaded!
+                    </template>
+                `;
+            }, 1000);
+        </script>
     </head>
 
     <body>
@@ -60,5 +70,8 @@
         4x baz, bold 'a' in the second 2:<br />
         <test-repeat> <span slot="foo">b<b>a</b>z</span> </test-repeat><br />
         <hr />
+        <p>Test 8: test async loading</p>
+        <div id="async"></div>
+        <async-test></async-test>
     </body>
 </html>
