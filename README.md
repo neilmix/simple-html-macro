@@ -30,7 +30,7 @@ and the default color is "black".
 **Step 2: Include `simple-html-macro.js` in your HTML file.**
 
 ```
-<script src="https://cdn.jsdelivr.net/gh/neilmix/simple-html-macro@1.0.1/simple-html-macro.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/neilmix/simple-html-macro@1.0.2/simple-html-macro.js"></script>
 ```
 
 **Step 3: Use your custom HTML tag.**
