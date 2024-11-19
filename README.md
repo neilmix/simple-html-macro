@@ -8,7 +8,13 @@ The simplest way to reuse markup in your web page.
 This library allows you to create custom HTML tags that get replaced by a pre-defined template.
 Here's how to use it.
 
-**Step 1: Create your macro template.**
+**Step 1: Include `simple-html-macro.js` in your HTML file.**
+
+```
+<script defer src="https://cdn.jsdelivr.net/gh/neilmix/simple-html-macro@1.0.2/simple-html-macro.js"></script>
+```
+
+**Step 2: Create your macro template.**
 
 - Use a `template` tag with `type="macro"` as your template.
 - The `tag-name` attribute will signify your custom element's name.
@@ -25,12 +31,6 @@ and the default color is "black".
         <slot name="role">
     </div>
 </template>
-```
-
-**Step 2: Include `simple-html-macro.js` in your HTML file.**
-
-```
-<script src="https://cdn.jsdelivr.net/gh/neilmix/simple-html-macro@1.0.2/simple-html-macro.js"></script>
 ```
 
 **Step 3: Use your custom HTML tag.**
